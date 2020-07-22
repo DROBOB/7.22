@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .option {
+            border: 1px solid gray;
+            width: 300px;
+            height: 200px;
+            /* margin: 300px auto; */
+            position: relative;
+            line-height: 100px;
+            text-align: center;
+            font-size: 30px;
+            /* display: none; */
+            float: left;
+            top: 300px;
+            left: 569px;
+        }
+
+        .start {
+            border: 1px solid red;
+            width: 70px;
+            height: 30px;
+            position: relative;
+            /* top: 150px; */
+            margin: 50px auto;
+            line-height: 30px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+
+        }
+
+        .quit {
+
+            border: orange 2px solid;
+            float: right;
+            right: 0;
+            display: none;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="option">
+        打字游戏
+
+
+        <div class="start">
+            开始游戏
+        </div>
+
+    </div>
+
+    <div class="quit">
+        退出
+    </div>
+    <script>
+
+        var letter = ["A", "B", "C", "D", "E"];
+
+
+        var divs = []
+
+        function create(num) {
+            var current = [];
+
+
+            for (var i = 0; i < num; i++) {
+                current.push(letter[Math.floor(letter.length * Math.random())])
+            }
+
+
+
+            for (var i = 0; i < current.length; i++) {
+                var div = document.createElement("div")
+                div.innerHTML = current[i];
+                div.style.cssText = "position:absolute;left:" + document.documentElement.clientWidth * Math.random() + "px;top:" + (20 * Math.random()) + "px; font-size:100px"
+                document.body.appendChild(div);
+                divs.push(div)
+            }
+        }
+
+        // create(4);
+
+
+        document.onkeydown = function (ev) {
+            var letter = String.fromCharCode(ev.keyCode);
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].innerHTML == letter) {
+                    document.body.removeChild(divs[i]);
+                    divs.splice(i, 1);
+                    create(1)
+
+                    break;
+
+                }
+            }
+
+        }
+
+        var speed = 5;
+        var t = setInterval(play, 50)
+        function play() {
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.top = divs[i].offsetTop + speed + "px"
+                // if (divs[i].offsetTop + speed > 800) {
+                //     document.body.removeChild(divs[i]);
+
+                // }
+
+
+            }
+
+        }
+
+
+
+
+
+
+
+        var start = document.querySelector(".start")
+        var option = document.querySelector(".option")
+        var quit = document.querySelector(".quit")
+
+        var level = 3
+
+        start.onclick = function () {
+
+            option.style.display = "none"
+
+            create(level);
+
+
+
+            quit.style.display = "block"
+
+            quit.onclick = function () {
+                clearInterval(t)
+
+                option.style.display = "block"
+                quit.style.display = "none"
+                for (i = 0; i < level; i++)
+                    document.body.removeChild(divs[i]);
+            }
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
