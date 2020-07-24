@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        a{
+            color:black;
+            text-decoration:none ;
+        }
         .option {
             border: 1px solid gray;
             width: 300px;
@@ -35,19 +39,44 @@
 
         }
 
-        .quit {
+        .pause {
 
             border: orange 2px solid;
             float: right;
-            right: 0;
+            right: 10px;
             display: none;
             cursor: pointer;
+            position: absolute;
+
+        }
+        .restart {
+
+            border: orange 2px solid;
+            float: right;
+            /*right: 10px;*/
+            right:10px;
+            top: 35px;
+            display: none;
+            cursor: pointer;
+            position: absolute;
+
+        }
+        .quit{
+            border: orange 2px solid;
+            float: right;
+            /*right: 10px;*/
+            right:10px;
+            top: 62px;
+            display: none;
+            cursor: pointer;
+            position: absolute;
 
         }
     </style>
 </head>
 
 <body>
+    <div class="play-area" >
     <div class="option">
         打字游戏
 
@@ -58,36 +87,77 @@
 
     </div>
 
-    <div class="quit">
-        退出
+    <div class="pause">
+        暂停
     </div>
+
+        <div class="restart">
+            继续
+        </div>
+
+        <div class="quit">
+            <a href="key.html">退出</a>
+        </div>
+
+
+</div>
     <script>
 
+        // var playArea=document.querySelector(".play-area")
+
         var letter = ["A", "B", "C", "D", "E"];
+
+        // for(var i=0;i<3;i++){
+        //     var div = document.createElement("div")
+        //
+        // }
+
+
 
 
         var divs = []
 
         function create(num) {
             var current = [];
+            // var div = document.createElement("div")
+
 
 
             for (var i = 0; i < num; i++) {
                 current.push(letter[Math.floor(letter.length * Math.random())])
             }
 
-
-
             for (var i = 0; i < current.length; i++) {
+
+                // var playAreaParent=playArea.parentNode
                 var div = document.createElement("div")
                 div.innerHTML = current[i];
                 div.style.cssText = "position:absolute;left:" + document.documentElement.clientWidth * Math.random() + "px;top:" + (20 * Math.random()) + "px; font-size:100px"
                 document.body.appendChild(div);
+                // playAreaParent.appendChild(div)
                 divs.push(div)
             }
+
+
+
         }
 
-        // create(4);
+        var speed = 3;
+        function play() {
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.top = divs[i].offsetTop + speed + "px"
+                if (divs[i].offsetTop + speed > 800) {
+                    document.body.removeChild(divs[i]);
+                    create(1)
+
+                }
+
+
+            }
+
+
+        }
+        var t = setInterval(play, 50)
 
 
         document.onkeydown = function (ev) {
@@ -105,20 +175,7 @@
 
         }
 
-        var speed = 5;
-        var t = setInterval(play, 50)
-        function play() {
-            for (var i = 0; i < divs.length; i++) {
-                divs[i].style.top = divs[i].offsetTop + speed + "px"
-                // if (divs[i].offsetTop + speed > 800) {
-                //     document.body.removeChild(divs[i]);
 
-                // }
-
-
-            }
-
-        }
 
 
 
@@ -128,35 +185,46 @@
 
         var start = document.querySelector(".start")
         var option = document.querySelector(".option")
+        var pause = document.querySelector(".pause")
+        var restart = document.querySelector(".restart")
+
         var quit = document.querySelector(".quit")
+
 
         var level = 3
 
         start.onclick = function () {
 
             option.style.display = "none"
-
+            // t=setInterval(play, 50)
             create(level);
-
-
-
-            quit.style.display = "block"
-
-            quit.onclick = function () {
-                clearInterval(t)
-
-                option.style.display = "block"
-                quit.style.display = "none"
-                for (i = 0; i < level; i++)
-                    document.body.removeChild(divs[i]);
-            }
-
-
-
-
-
+            pause.style.display = "block"
 
         }
+
+        pause.onclick = function () {
+            clearInterval(t)
+
+            // option.style.display = "block"
+            restart.style.display = "block"
+            // for (i = 0; i < level; i++) {
+            //     document.body.removeChild(div);
+            // }
+            quit.style.display="block"
+
+        }
+
+        restart.onclick=function(){
+            t=setInterval(play,50);
+            quit.style.display="none";
+            restart.style.display="none"
+        }
+
+        // quit.onclick=function () {
+        //
+        //
+        //
+        // }
 
 
 
